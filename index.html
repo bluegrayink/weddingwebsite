@@ -65,12 +65,24 @@
             border-radius: 5px;
             font-size: 1rem;
         }
-        .message-preview {
+        .messages {
             margin-top: 20px;
             padding: 15px;
             background: #f0f0f0;
             border-radius: 5px;
-            font-style: italic;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .message-item {
+            padding: 10px;
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-top: 10px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
         }
         footer {
             padding: 20px;
@@ -92,16 +104,31 @@
     <div class="message-box">
         <h3>Leave a Message</h3>
         <textarea id="messageInput" placeholder="Write your message..."></textarea>
-        <div class="message-preview" id="messagePreview">Your message will appear here...</div>
+        <button class="btn" onclick="addMessage()">Send</button>
     </div>
+    <div class="messages" id="messages"></div>
     <footer>
         <p>&copy; 2025 John & Jane's Wedding</p>
     </footer>
     <script>
-        document.getElementById('messageInput').addEventListener('input', function() {
-            let message = this.value;
-            document.getElementById('messagePreview').textContent = message ? message : 'Your message will appear here...';
-        });
+        function addMessage() {
+            let messageInput = document.getElementById('messageInput');
+            let messageText = messageInput.value.trim();
+            if (messageText === '') return;
+            
+            let messageContainer = document.getElementById('messages');
+            let messageItem = document.createElement('div');
+            messageItem.className = 'message-item';
+            messageItem.textContent = messageText;
+            
+            messageContainer.appendChild(messageItem);
+            messageInput.value = '';
+            
+            setTimeout(() => {
+                messageItem.style.opacity = '1';
+                messageItem.style.transform = 'translateY(0)';
+            }, 100);
+        }
     </script>
 </body>
 </html>
