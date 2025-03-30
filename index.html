@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wedding Invitation</title>
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-database.js"></script>
     <style>
         body {
             margin: 0;
@@ -42,6 +44,7 @@
             border-radius: 5px;
             font-weight: 600;
             transition: 0.3s;
+            cursor: pointer;
         }
         .btn:hover {
             background: #9e865f;
@@ -111,24 +114,47 @@
         <p>&copy; 2025 John & Jane's Wedding</p>
     </footer>
     <script>
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            databaseURL: "YOUR_DATABASE_URL",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+        
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+        
         function addMessage() {
             let messageInput = document.getElementById('messageInput');
             let messageText = messageInput.value.trim();
             if (messageText === '') return;
             
+            let messageRef = database.ref('messages').push();
+            messageRef.set({
+                text: messageText,
+                timestamp: Date.now()
+            });
+            messageInput.value = '';
+        }
+        
+        function displayMessage(snapshot) {
+            let messageData = snapshot.val();
             let messageContainer = document.getElementById('messages');
             let messageItem = document.createElement('div');
             messageItem.className = 'message-item';
-            messageItem.textContent = messageText;
-            
+            messageItem.textContent = messageData.text;
             messageContainer.appendChild(messageItem);
-            messageInput.value = '';
             
             setTimeout(() => {
                 messageItem.style.opacity = '1';
                 messageItem.style.transform = 'translateY(0)';
             }, 100);
         }
+        
+        database.ref('messages').on('child_added', displayMessage);
     </script>
 </body>
 </html>
