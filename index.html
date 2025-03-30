@@ -6,66 +6,64 @@
     <title>Wedding Invitation</title>
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <script type="module">
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-analytics.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js";
+        import { getDatabase, ref, push, set, onChildAdded } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-database.js";
+        
+        const firebaseConfig = {
+            apiKey: "AIzaSyDUlQFAIca8RMQJT8uGWa8SyGKIbP9uvzw",
+            authDomain: "bluewedsites.firebaseapp.com",
+            databaseURL: "https://bluewedsites-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "bluewedsites",
+            storageBucket: "bluewedsites.appspot.com",
+            messagingSenderId: "337835623394",
+            appId: "1:337835623394:web:57212d721c0f7e00d7afbb",
+            measurementId: "G-TJX98ZBWFE"
+        };
 
-  // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  const firebaseConfig = {
-    apiKey: "AIzaSyDUlQFAIca8RMQJT8uGWa8SyGKIbP9uvzw",
-    authDomain: "bluewedsites.firebaseapp.com",
-    databaseURL: "https://bluewedsites-default-rtdb.asia-southeast1.firebasedatabase.app",
-    projectId: "bluewedsites",
-    storageBucket: "bluewedsites.appspot.com",
-    messagingSenderId: "337835623394",
-    appId: "1:337835623394:web:57212d721c0f7e00d7afbb",
-    measurementId: "G-TJX98ZBWFE"
-};
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+        const messagesRef = ref(database, 'messages');
 
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
-    const database = getDatabase(app);
-    const messagesRef = ref(database, 'messages');
+        // Function untuk mengirim pesan
+        function addMessage() {
+            let nameInput = document.getElementById('nameInput').value.trim();
+            let messageInput = document.getElementById('messageInput').value.trim();
 
-    window.addMessage = function () {
-        let nameInput = document.getElementById('nameInput').value.trim();
-        let messageInput = document.getElementById('messageInput').value.trim();
+            if (nameInput === '' || messageInput === '') return;
 
-        if (nameInput === '' || messageInput === '') return;
+            let messageRef = push(messagesRef);
+            set(messageRef, {
+                name: nameInput,
+                text: messageInput,
+                timestamp: Date.now()
+            });
 
-        let messageRef = push(messagesRef);
-        set(messageRef, {
-            name: nameInput,
-            text: messageInput,
-            timestamp: Date.now()
+            document.getElementById('nameInput').value = '';
+            document.getElementById('messageInput').value = '';
+        }
+
+        // Supaya addMessage bisa dipanggil dari tombol HTML
+        window.addMessage = addMessage;
+
+        // Function untuk menampilkan pesan di halaman
+        function addMessageToDOM(messageData) {
+            let messageContainer = document.getElementById('messages');
+
+            let messageItem = document.createElement('div');
+            messageItem.className = 'message-item';
+            messageItem.innerHTML = `<strong>${messageData.name}:</strong> ${messageData.text}`;
+
+            messageContainer.appendChild(messageItem);
+            messageContainer.scrollTop = messageContainer.scrollHeight;
+        }
+
+        // Ambil setiap pesan baru tanpa menghapus pesan sebelumnya
+        onChildAdded(messagesRef, (snapshot) => {
+            let messageData = snapshot.val();
+            addMessageToDOM(messageData);
         });
 
-        document.getElementById('nameInput').value = '';
-        document.getElementById('messageInput').value = '';
-    };
-
-    function addMessageToDOM(messageData) {
-        let messageContainer = document.getElementById('messages');
-
-        let messageItem = document.createElement('div');
-        messageItem.className = 'message-item';
-        messageItem.innerHTML = `<strong>${messageData.name}:</strong> ${messageData.text}`;
-
-        messageContainer.appendChild(messageItem);
-        messageContainer.scrollTop = messageContainer.scrollHeight;
-    }
-
-    // Ambil setiap pesan baru tanpa menghapus pesan sebelumnya
-    onChildAdded(messagesRef, (snapshot) => {
-        let messageData = snapshot.val();
-        addMessageToDOM(messageData);
-    });
-
-</script>
+    </script>
     <style>
         body {
             font-family: 'Poppins', sans-serif;
