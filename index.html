@@ -106,10 +106,12 @@
     </div>
     <div class="message-box">
         <h3>Leave a Message</h3>
-        <textarea id="messageInput" placeholder="Write your message..."></textarea>
-        <button class="btn" onclick="addMessage()">Send</button>
+        <input type="text" id="nameInput" placeholder="Masukkan Nama">
+<input type="text" id="messageInput" placeholder="Masukkan Pesan">
+<button onclick="addMessage()">Kirim</button>
+
+<div id="messages"></div>
     </div>
-    <div class="messages" id="messages"></div>
     <footer>
         <p>&copy; 2025 John & Jane's Wedding</p>
     </footer>
@@ -136,16 +138,17 @@
 
   // Fungsi untuk menambahkan pesan
   window.addMessage = function() {
-    let messageInput = document.getElementById('messageInput');
-    let messageText = messageInput.value.trim();
-    if (messageText === '') return;
+    let nameInput = document.getElementById('nameInput').value.trim();
+    let messageInput = document.getElementById('messageInput').value.trim();
+    if (nameInput === '' || messageInput === '') return;
 
     push(ref(database, 'messages'), {
-      text: messageText,
+      name: nameInput,
+      text: messageInput,
       timestamp: Date.now()
     });
 
-    messageInput.value = ''; // Hapus teks setelah dikirim
+    document.getElementById('messageInput').value = ''; // Hapus pesan setelah dikirim
   };
 
   // Fungsi untuk menampilkan pesan
@@ -153,9 +156,11 @@
   onChildAdded(messagesRef, (snapshot) => {
     let messageData = snapshot.val();
     let messageContainer = document.getElementById('messages');
+
     let messageItem = document.createElement('div');
     messageItem.className = 'message-item';
-    messageItem.textContent = messageData.text;
+    messageItem.innerHTML = `<strong>${messageData.name}:</strong> ${messageData.text}`;
+    
     messageContainer.appendChild(messageItem);
 
     setTimeout(() => {
@@ -163,7 +168,6 @@
       messageItem.style.transform = 'translateY(0)';
     }, 100);
   });
-
 </script>
 </body>
 </html>
