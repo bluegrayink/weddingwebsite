@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NFC Scanner</title>
+    <link rel="stylesheet" href="styles11.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Scan NFC untuk Menampilkan Gambar</h1>
+        <button id="scanBtn">Mulai Scan NFC</button>
+    </div>
+
+    <script>
+        document.getElementById("scanBtn").addEventListener("click", async () => {
+            try {
+                const ndef = new NDEFReader();
+                await ndef.scan();
+                console.log("Scanning NFC...");
+
+                ndef.addEventListener("reading", (event) => {
+                    const decoder = new TextDecoder();
+                    let nfcData = decoder.decode(event.message.records[0].data);
+                    console.log("NFC Data: ", nfcData);
+
+                    // Simpan NFC data ke localStorage & pindah ke halaman display
+                    localStorage.setItem("nfcData", nfcData);
+                    window.location.href = "display.html";
+                });
+            } catch (error) {
+                console.error("NFC scan failed: ", error);
+            }
+        });
+    </script>
+</body>
+</html>
