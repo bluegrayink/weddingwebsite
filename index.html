@@ -113,51 +113,57 @@
     <footer>
         <p>&copy; 2025 John & Jane's Wedding</p>
     </footer>
-    <script>
-        // Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyDUlQFAIca8RMQJT8uGWa8SyGKIbP9uvzw",
-            authDomain: "bluewedsites.firebaseapp.com",
-            databaseURL: "https://bluewedsites-default-rtdb.firebaseio.com/",
-            projectId: "bluewedsites",
-            storageBucket: "bluewedsites.appspot.com",
-            messagingSenderId: "337835623394",
-            appId: "1:337835623394:web:57212d721c0f7e00d7afbb",
-            measurementId: "G-TJX98ZBWFE"
-        };
+    <script type="module">
+  // Import Firebase
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
+  import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-database.js";
 
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-        const database = firebase.database();
+  // Konfigurasi Firebase
+  const firebaseConfig = {
+    apiKey: "AIzaSyDUlQFAIca8RMQJT8uGWa8SyGKIbP9uvzw",
+    authDomain: "bluewedsites.firebaseapp.com",
+    databaseURL: "https://bluewedsites-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "bluewedsites",
+    storageBucket: "bluewedsites.appspot.com",
+    messagingSenderId: "337835623394",
+    appId: "1:337835623394:web:57212d721c0f7e00d7afbb",
+    measurementId: "G-TJX98ZBWFE"
+  };
 
-        function addMessage() {
-            let messageInput = document.getElementById('messageInput');
-            let messageText = messageInput.value.trim();
-            if (messageText === '') return;
-            
-            let messageRef = database.ref('messages').push();
-            messageRef.set({
-                text: messageText,
-                timestamp: Date.now()
-            });
-            messageInput.value = '';
-        }
+  // Inisialisasi Firebase
+  const app = initializeApp(firebaseConfig);
+  const database = getDatabase(app);
 
-        function displayMessage(snapshot) {
-            let messageData = snapshot.val();
-            let messageContainer = document.getElementById('messages');
-            let messageItem = document.createElement('div');
-            messageItem.className = 'message-item';
-            messageItem.textContent = messageData.text;
-            messageContainer.appendChild(messageItem);
-            
-            setTimeout(() => {
-                messageItem.style.opacity = '1';
-                messageItem.style.transform = 'translateY(0)';
-            }, 100);
-        }
+  // Fungsi untuk menambahkan pesan
+  window.addMessage = function() {
+    let messageInput = document.getElementById('messageInput');
+    let messageText = messageInput.value.trim();
+    if (messageText === '') return;
 
-        database.ref('messages').on('child_added', displayMessage);
-    </script>
+    push(ref(database, 'messages'), {
+      text: messageText,
+      timestamp: Date.now()
+    });
+
+    messageInput.value = ''; // Hapus teks setelah dikirim
+  };
+
+  // Fungsi untuk menampilkan pesan
+  const messagesRef = ref(database, 'messages');
+  onChildAdded(messagesRef, (snapshot) => {
+    let messageData = snapshot.val();
+    let messageContainer = document.getElementById('messages');
+    let messageItem = document.createElement('div');
+    messageItem.className = 'message-item';
+    messageItem.textContent = messageData.text;
+    messageContainer.appendChild(messageItem);
+
+    setTimeout(() => {
+      messageItem.style.opacity = '1';
+      messageItem.style.transform = 'translateY(0)';
+    }, 100);
+  });
+
+</script>
 </body>
 </html>
