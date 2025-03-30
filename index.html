@@ -7,13 +7,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js";
-    import { getDatabase, ref, push, set, onChildAdded, onValue } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-database.js";
+    import { getDatabase, ref, push, set, onChildAdded } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-database.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyDUlQFAIca8RMQJT8uGWa8SyGKIbP9uvzw",
         authDomain: "bluewedsites.firebaseapp.com",
         projectId: "bluewedsites",
-        storageBucket: "bluewedsites.firebasestorage.app",
+        storageBucket: "bluewedsites.app",
         messagingSenderId: "337835623394",
         appId: "1:337835623394:web:57212d721c0f7e00d7afbb",
         measurementId: "G-TJX98ZBWFE"
@@ -40,30 +40,23 @@
         document.getElementById('messageInput').value = '';
     };
 
-    function displayMessages(snapshot) {
+    function addMessageToDOM(messageData) {
         let messageContainer = document.getElementById('messages');
-        messageContainer.innerHTML = ''; // Hapus pesan sebelumnya untuk mencegah duplikasi
 
-        let messagesArray = [];
-        snapshot.forEach(childSnapshot => {
-            messagesArray.push(childSnapshot.val());
-        });
+        let messageItem = document.createElement('div');
+        messageItem.className = 'message-item';
+        messageItem.innerHTML = `<strong>${messageData.name}:</strong> ${messageData.text}`;
 
-        // Urutkan pesan berdasarkan timestamp
-        messagesArray.sort((a, b) => a.timestamp - b.timestamp);
-
-        messagesArray.forEach(messageData => {
-            let messageItem = document.createElement('div');
-            messageItem.className = 'message-item';
-            messageItem.innerHTML = `<strong>${messageData.name}:</strong> ${messageData.text}`;
-            messageContainer.appendChild(messageItem);
-        });
-
+        messageContainer.appendChild(messageItem);
         messageContainer.scrollTop = messageContainer.scrollHeight;
     }
 
-    // Ambil semua pesan yang ada saat halaman dimuat
-    onValue(messagesRef, displayMessages);
+    // Ambil setiap pesan baru tanpa menghapus pesan sebelumnya
+    onChildAdded(messagesRef, (snapshot) => {
+        let messageData = snapshot.val();
+        addMessageToDOM(messageData);
+    });
+
 </script>
     <style>
         body {
@@ -73,7 +66,7 @@
             text-align: center;
         }
         .hero {
-            background: url('https://img.freepik.com/free-photo/groom-putting-ring-bride-s-finger_1157-338.jpg?t=st=1743326480~exp=1743330080~hmac=875c81d81291a7a2aa27e6842a680459654290a30ec507290eb2209ccdc7de99&w=996') no-repeat center center/cover;
+            background: url('https://img.freepik.com/free-photo/groom-putting-ring-bride-s-finger_1157-338.jpg') no-repeat center center/cover;
             height: 100vh;
             display: flex;
             justify-content: center;
@@ -164,7 +157,7 @@
     </div>
     <div class="messages" id="messages"></div>
     <footer>
-        <p>&copy; 2025 John & Jane's Wedding</p>
+        <p>&copy; Bluegray Ink</p>
     </footer>
 </body>
 </html>
