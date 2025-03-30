@@ -5,12 +5,58 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wedding Invitation</title>
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <script src="https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/11.5.0/firebase-database.js"></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js";
+        import { getDatabase, ref, push, set, onChildAdded } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDUlQFAIca8RMQJT8uGWa8SyGKIbP9uvzw",
+            authDomain: "bluewedsites.firebaseapp.com",
+            projectId: "bluewedsites",
+            storageBucket: "bluewedsites.firebasestorage.app",
+            messagingSenderId: "337835623394",
+            appId: "1:337835623394:web:57212d721c0f7e00d7afbb",
+            measurementId: "G-TJX98ZBWFE"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+        
+        window.addMessage = function () {
+            let nameInput = document.getElementById('nameInput').value.trim();
+            let messageInput = document.getElementById('messageInput').value.trim();
+
+            if (nameInput === '' || messageInput === '') return;
+
+            let messageRef = push(ref(database, 'messages'));
+            set(messageRef, {
+                name: nameInput,
+                text: messageInput,
+                timestamp: Date.now()
+            });
+
+            document.getElementById('nameInput').value = '';
+            document.getElementById('messageInput').value = '';
+        };
+        
+        onChildAdded(ref(database, 'messages'), (snapshot) => {
+            let messageData = snapshot.val();
+            let messageContainer = document.getElementById('messages');
+            
+            let messageItem = document.createElement('div');
+            messageItem.className = 'message-item';
+            messageItem.innerHTML = `<strong>${messageData.name}:</strong> ${messageData.text}`;
+            
+            messageContainer.appendChild(messageItem);
+            
+            setTimeout(() => {
+                messageItem.style.opacity = '1';
+                messageItem.style.transform = 'translateY(0)';
+            }, 100);
+        });
+    </script>
     <style>
         body {
-            margin: 0;
-            padding: 0;
             font-family: 'Poppins', sans-serif;
             background-color: #f8f8f8;
             color: #4a4a4a;
@@ -28,7 +74,6 @@
         .hero h1 {
             font-family: 'Great Vibes', cursive;
             font-size: 4rem;
-            margin: 0;
         }
         .section {
             padding: 50px;
@@ -36,18 +81,12 @@
             margin: auto;
         }
         .btn {
-            display: inline-block;
             padding: 12px 24px;
             background: #b79d74;
             color: white;
-            text-decoration: none;
             border-radius: 5px;
             font-weight: 600;
-            transition: 0.3s;
             cursor: pointer;
-        }
-        .btn:hover {
-            background: #9e865f;
         }
         .message-box {
             margin-top: 50px;
@@ -55,18 +94,21 @@
             background: white;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            text-align: left;
             max-width: 600px;
             margin-left: auto;
             margin-right: auto;
         }
-        textarea {
+        .input-field {
             width: 100%;
-            height: 100px;
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
             font-size: 1rem;
+            margin-bottom: 10px;
+        }
+        .textarea-field {
+            height: 120px;
+            resize: none;
         }
         .messages {
             margin-top: 20px;
@@ -106,68 +148,13 @@
     </div>
     <div class="message-box">
         <h3>Leave a Message</h3>
-        <input type="text" id="nameInput" placeholder="Masukkan Nama">
-<input type="text" id="messageInput" placeholder="Masukkan Pesan">
-<button onclick="addMessage()">Kirim</button>
-
-<div id="messages"></div>
+        <input type="text" id="nameInput" placeholder="Your Name" class="input-field">
+        <textarea id="messageInput" placeholder="Write your message..." class="input-field textarea-field"></textarea>
+        <button class="btn" onclick="addMessage()">Send</button>
     </div>
+    <div class="messages" id="messages"></div>
     <footer>
         <p>&copy; 2025 John & Jane's Wedding</p>
     </footer>
-    <script type="module">
-  // Import Firebase
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
-  import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-database.js";
-
-  // Konfigurasi Firebase
-  const firebaseConfig = {
-    apiKey: "AIzaSyDUlQFAIca8RMQJT8uGWa8SyGKIbP9uvzw",
-    authDomain: "bluewedsites.firebaseapp.com",
-    databaseURL: "https://bluewedsites-default-rtdb.asia-southeast1.firebasedatabase.app",
-    projectId: "bluewedsites",
-    storageBucket: "bluewedsites.appspot.com",
-    messagingSenderId: "337835623394",
-    appId: "1:337835623394:web:57212d721c0f7e00d7afbb",
-    measurementId: "G-TJX98ZBWFE"
-  };
-
-  // Inisialisasi Firebase
-  const app = initializeApp(firebaseConfig);
-  const database = getDatabase(app);
-
-  // Fungsi untuk menambahkan pesan
-  window.addMessage = function() {
-    let nameInput = document.getElementById('nameInput').value.trim();
-    let messageInput = document.getElementById('messageInput').value.trim();
-    if (nameInput === '' || messageInput === '') return;
-
-    push(ref(database, 'messages'), {
-      name: nameInput,
-      text: messageInput,
-      timestamp: Date.now()
-    });
-
-    document.getElementById('messageInput').value = ''; // Hapus pesan setelah dikirim
-  };
-
-  // Fungsi untuk menampilkan pesan
-  const messagesRef = ref(database, 'messages');
-  onChildAdded(messagesRef, (snapshot) => {
-    let messageData = snapshot.val();
-    let messageContainer = document.getElementById('messages');
-
-    let messageItem = document.createElement('div');
-    messageItem.className = 'message-item';
-    messageItem.innerHTML = `<strong>${messageData.name}:</strong> ${messageData.text}`;
-    
-    messageContainer.appendChild(messageItem);
-
-    setTimeout(() => {
-      messageItem.style.opacity = '1';
-      messageItem.style.transform = 'translateY(0)';
-    }, 100);
-  });
-</script>
 </body>
 </html>
