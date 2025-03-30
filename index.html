@@ -6,52 +6,65 @@
     <title>Wedding Invitation</title>
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js";
-        import { getDatabase, ref, push, set, onChildAdded } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-database.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js";
+    import { getDatabase, ref, push, set, onChildAdded, onValue } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-database.js";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyDUlQFAIca8RMQJT8uGWa8SyGKIbP9uvzw",
-            authDomain: "bluewedsites.firebaseapp.com",
-            projectId: "bluewedsites",
-            storageBucket: "bluewedsites.firebasestorage.app",
-            messagingSenderId: "337835623394",
-            appId: "1:337835623394:web:57212d721c0f7e00d7afbb",
-            measurementId: "G-TJX98ZBWFE"
-        };
+    const firebaseConfig = {
+        apiKey: "AIzaSyDUlQFAIca8RMQJT8uGWa8SyGKIbP9uvzw",
+        authDomain: "bluewedsites.firebaseapp.com",
+        projectId: "bluewedsites",
+        storageBucket: "bluewedsites.firebasestorage.app",
+        messagingSenderId: "337835623394",
+        appId: "1:337835623394:web:57212d721c0f7e00d7afbb",
+        measurementId: "G-TJX98ZBWFE"
+    };
 
-        const app = initializeApp(firebaseConfig);
-        const database = getDatabase(app);
-        const messagesRef = ref(database, 'messages');
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
+    const messagesRef = ref(database, 'messages');
 
-        window.addMessage = function () {
-            let nameInput = document.getElementById('nameInput').value.trim();
-            let messageInput = document.getElementById('messageInput').value.trim();
+    window.addMessage = function () {
+        let nameInput = document.getElementById('nameInput').value.trim();
+        let messageInput = document.getElementById('messageInput').value.trim();
 
-            if (nameInput === '' || messageInput === '') return;
+        if (nameInput === '' || messageInput === '') return;
 
-            let messageRef = push(messagesRef);
-            set(messageRef, {
-                name: nameInput,
-                text: messageInput,
-                timestamp: Date.now()
-            });
+        let messageRef = push(messagesRef);
+        set(messageRef, {
+            name: nameInput,
+            text: messageInput,
+            timestamp: Date.now()
+        });
 
-            document.getElementById('nameInput').value = '';
-            document.getElementById('messageInput').value = '';
-        };
+        document.getElementById('nameInput').value = '';
+        document.getElementById('messageInput').value = '';
+    };
 
-        onChildAdded(messagesRef, (snapshot) => {
-            let messageData = snapshot.val();
-            let messageContainer = document.getElementById('messages');
+    function displayMessages(snapshot) {
+        let messageContainer = document.getElementById('messages');
+        messageContainer.innerHTML = ''; // Hapus pesan sebelumnya untuk mencegah duplikasi
 
+        let messagesArray = [];
+        snapshot.forEach(childSnapshot => {
+            messagesArray.push(childSnapshot.val());
+        });
+
+        // Urutkan pesan berdasarkan timestamp
+        messagesArray.sort((a, b) => a.timestamp - b.timestamp);
+
+        messagesArray.forEach(messageData => {
             let messageItem = document.createElement('div');
             messageItem.className = 'message-item';
             messageItem.innerHTML = `<strong>${messageData.name}:</strong> ${messageData.text}`;
-
             messageContainer.appendChild(messageItem);
-            messageContainer.scrollTop = messageContainer.scrollHeight;
         });
-    </script>
+
+        messageContainer.scrollTop = messageContainer.scrollHeight;
+    }
+
+    // Ambil semua pesan yang ada saat halaman dimuat
+    onValue(messagesRef, displayMessages);
+</script>
     <style>
         body {
             font-family: 'Poppins', sans-serif;
