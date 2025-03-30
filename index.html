@@ -63,6 +63,38 @@
             addMessageToDOM(messageData);
         });
 
+        // Cek apakah browser mendukung NFC
+    async function scanNFC() {
+        if (!("NDEFReader" in window)) {
+            alert("Browser ini tidak mendukung NFC.");
+            return;
+        }
+
+        try {
+            const ndef = new NDEFReader();
+            await ndef.scan();
+            console.log("Scanning NFC...");
+
+            ndef.addEventListener("reading", ({ serialNumber }) => {
+                console.log("NFC UID:", serialNumber);
+
+                // Cek apakah UID sesuai
+                if (serialNumber === "04DE5AA0672681") {
+                    alert("Akses diterima! Selamat datang.");
+                } else {
+                    alert("Akses ditolak! Kartu tidak dikenali.");
+                }
+            });
+        } catch (error) {
+            console.error("Gagal memindai NFC:", error);
+            alert("Gagal memindai NFC.");
+        }
+    }
+
+    // Tambahkan event listener ke tombol scan
+    document.addEventListener("DOMContentLoaded", () => {
+        document.getElementById("scanButton").addEventListener("click", scanNFC);
+    });
     </script>
     <style>
         body {
