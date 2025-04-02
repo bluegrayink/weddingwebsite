@@ -4,96 +4,97 @@ const uidToPageMap = {
 };
 
 // Elements
-const iphoneButton = document.getElementById("iphoneButton");
-const iphoneSection = document.getElementById("iphoneSection");
-const submitUidButton = document.getElementById("submitUidButton");
-const uidInput = document.getElementById("uidInput");
-const statusDiv = document.getElementById("status");
-const scanButton = document.getElementById("scanButton");
-const logDiv = document.getElementById("log");
+    const iphoneButton = document.getElementById("iphoneButton");
+    const androidButton = document.getElementById("scanButton");
+    const iphoneSection = document.getElementById("iphoneSection");
+    const androidSection = document.getElementById("androidSection");
+    const submitUidButton = document.getElementById("submitUidButton");
+    const uidInput = document.getElementById("uidInput");
+    const statusDiv = document.getElementById("status");
+    const logDiv = document.getElementById("log");
 
-// Helper functions for logging and status
-const ChromeSamples = {
-    log: function () {
-        const line = Array.from(arguments)
-            .map(arg => (typeof arg === "string" ? arg : JSON.stringify(arg)))
-            .join(" ");
-        logDiv.innerHTML += line + "<br>";
-    },
-    setStatus: function (status) {
-        statusDiv.textContent = status;
-    }
+
+// Helper functions
+const setStatus = (status) => {
+    statusDiv.textContent = status;
 };
 
-// Alias for logging
-const log = ChromeSamples.log;
-
-// Function to sanitize UID (remove colons if present)
-const sanitizeUID = (uid) => {
-    return uid.replace(/:/g, "").toUpperCase(); // Remove ":" and convert to uppercase
+const log = (message) => {
+    logDiv.innerHTML += message + "<br>";
 };
+
+// Function to sanitize UID
+const sanitizeUID = (uid) => uid.replace(/:/g, "").toUpperCase();
 
 // Function to validate UID and redirect
 const validateAndRedirect = (rawUid) => {
-    const uid = sanitizeUID(rawUid); // Sanitize UID
-    let redirectTo = null;
-
-    for (const [page, uids] of Object.entries(uidToPageMap)) {
-        if (uids.includes(uid)) {
-            redirectTo = page;
-            break;
-        }
-    }
+    const uid = sanitizeUID(rawUid);
+    let redirectTo = Object.keys(uidToPageMap).find(page => uidToPageMap[page].includes(uid));
 
     if (redirectTo) {
-        ChromeSamples.setStatus("Access granted. Redirecting...");
+        setStatus("Access granted. Redirecting...");
         setTimeout(() => {
-            localStorage.setItem("isLoggedIn", "true"); // Set login status
-            window.location.href = redirectTo; // Redirect to respective page
+            localStorage.setItem("isLoggedIn", "true");
+            window.location.href = redirectTo;
         }, 1000);
     } else {
-        ChromeSamples.setStatus("Access denied: Invalid UID.");
+        setStatus("Access denied: Invalid UID.");
     }
 };
 
-// Show input section for iPhone
-iphoneButton.addEventListener("click", () => {
-    iphoneSection.style.display = "block";
-});
+// Show iPhone section when iPhone button is clicked
+    iphoneButton.addEventListener("click", () => {
+        console.log("iPhone button clicked");
+        iphoneSection.style.display = "block";
+        androidSection.style.display = "none";
+    });
 
-// Handle UID submission
-submitUidButton.addEventListener("click", () => {
-    const rawUid = uidInput.value.trim();
-    if (rawUid) {
-        validateAndRedirect(rawUid);
-    } else {
-        ChromeSamples.setStatus("Please enter a valid UID.");
-    }
-});
+    // Show Android section when Android button is clicked
+    androidButton.addEventListener("click", () => {
+        console.log("Android button clicked");
+        androidSection.style.display = "block";
+        iphoneSection.style.display = "none";
+    });
 
-// NFC scanning logic
-scanButton.addEventListener("click", async () => {
-    log("Please scan your NFC card...");
+    // Handle UID submission for iPhone users
+    submitUidButton.addEventListener("click", () => {
+        const rawUid = uidInput.value.trim();
+        console.log("Submitted UID:", rawUid);
+        if (rawUid) {
+            validateAndRedirect(rawUid);
+        } else {
+            setStatus("Please enter a valid UID.");
+        }
+    });
 
-    try {
-        const ndef = new NDEFReader();
-        await ndef.scan();
-        log("<i>&gt; Scan started &lt;</i>");
+    // NFC scanning logic for Android
+    androidButton.addEventListener("click", async () => {
+        log("Please scan your NFC card...");
 
-        ndef.addEventListener("readingerror", () => {
-            log("Cannot read data from the NFC tag. Try another one?");
-        });
+        try {
+            const ndef = new NDEFReader();
+            await ndef.scan();
+            log("<i>&gt; Scan started &lt;</i>");
+            console.log("NFC scan started");
 
-        ndef.addEventListener("reading", ({ serialNumber }) => {
-            const scannedUID = Array.from(new Uint8Array(serialNumber.split(':').map(val => parseInt(val, 16))))
-                .map(b => b.toString(16).padStart(2, "0"))
-                .join("")
-                .toUpperCase();
+            ndef.addEventListener("readingerror", () => {
+                log("Cannot read data from the NFC tag. Try another one?");
+                console.log("NFC reading error");
+            });
 
-            log(`Scanned UID: ${scannedUID}`);
-            validateAndRedirect(scannedUID);
-        });
-    } catch (error) {
-        log("Error: " + error.message);
-    }
-});
+            ndef.addEventListener("reading", ({ serialNumber }) => {
+                if (!serialNumber) {
+                    log("No serial number detected!");
+                    console.log("No serial number detected");
+                    return;
+                }
+                const scannedUID = sanitizeUID(serialNumber);
+                log(`Scanned UID: ${scannedUID}`);
+                console.log("Scanned UID:", scannedUID);
+                validateAndRedirect(scannedUID);
+            });
+        } catch (error) {
+            log("Error: " + error.message);
+            console.error("NFC error:", error);
+        }
+    });
