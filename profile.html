@@ -42,6 +42,23 @@
             background: #9e865f;
         }
     </style>
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const referrer = document.referrer; 
+        const allowedReferrers = ["index.html"];
+
+        const isAllowedReferrer = allowedReferrers.some(page => referrer.includes(page));
+        if (!isAllowedReferrer || !localStorage.getItem("isLoggedIn")) {
+            window.location.href = "index.html"; 
+        }
+
+        const redirectTimeout = 1800000;
+
+        setTimeout(() => {
+            alert("Session expired. Redirecting to homepage...");
+            window.location.href = "index.html";
+        }, redirectTimeout);
+    </script>
 </head>
 <body>
     <div class="container">
