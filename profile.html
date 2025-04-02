@@ -1,78 +1,115 @@
-<!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RSVP Information</title>
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Poppins', sans-serif;
-            background-color: #f8f8f8;
-            color: #4a4a4a;
-            text-align: center;
-        }
-        .container {
-            padding: 50px;
-            max-width: 800px;
-            margin: auto;
-        }
-        h1 {
-            font-family: 'Great Vibes', cursive;
-            font-size: 3rem;
-            color: #b79d74;
-        }
-        p {
-            font-size: 1.2rem;
-        }
-        .btn {
-            display: inline-block;
-            padding: 12px 24px;
-            background: #b79d74;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: 600;
-            transition: 0.3s;
-            cursor: pointer;
-        }
-        .btn:hover {
-            background: #9e865f;
-        }
-    </style>
-    <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const referrer = document.referrer; 
-        const allowedReferrers = ["index.html"];
+    <meta charset="utf-8">
+    <title>Jack & Rose</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-        const isAllowedReferrer = allowedReferrers.some(page => referrer.includes(page));
-        if (!isAllowedReferrer || !localStorage.getItem("isLoggedIn")) {
-            window.location.href = "index.html"; 
-        }
+    <!-- Favicon -->
+    <link href="img/favicon.ico" rel="icon">
 
-        const redirectTimeout = 1800000;
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@400;600&display=swap" rel="stylesheet"> 
 
-        setTimeout(() => {
-            alert("Session expired. Redirecting to homepage...");
-            window.location.href = "index.html";
-        }, redirectTimeout);
-    });
-    </script>
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="lib/lightbox/css/lightbox.min.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="css/style.css" rel="stylesheet">
 </head>
-<body>
-    <div class="container">
-        <h1>Thank You for Your RSVP!</h1>
-        <p>We are excited to celebrate our special day with you.</p>
-        <p>📍 Location: Rosewood Ballroom</p>
-        <p>📅 Date: 12 December 2025</p>
-        <p>⏰ Time: 5:00 PM - 10:00 PM</p>
-        <p>If you have any questions, feel free to contact us.</p>
-        <p><strong>--- Prepare for documentation ---</strong></p>
-        <p><button class="btn">Photo</button>
-        <button class="btn">Video</button><p>
-        <a href="index.html" class="btn">Back to Home</a>
+
+<body data-spy="scroll" data-target=".navbar" data-offset="51">
+    <!-- Navbar Start -->
+    <nav class="navbar fixed-top shadow-sm navbar-expand-lg bg-dark navbar-dark py-3 py-lg-0 px-lg-5">
+        <a href="index.html" class="navbar-brand d-block d-lg-none">
+            <h1 class="font-secondary text-white mb-n2">Jack <span class="text-primary">&</span> Rose</h1>
+        </a>
+        <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+            <div class="navbar-nav ml-auto py-0">
+                <a href="#about" class="nav-item nav-link">About</a>
+                <a href="#story" class="nav-item nav-link">Story</a>
+                <a href="#gallery" class="nav-item nav-link">Gallery</a>
+            </div>
+            <a href="index.html" class="navbar-brand mx-5 d-none d-lg-block">
+                <h1 class="font-secondary text-white mb-n2">Jack <span class="text-primary">&</span> Rose</h1>
+            </a>
+            <div class="navbar-nav mr-auto py-0">
+                <a href="#family" class="nav-item nav-link">Family</a>
+                <a href="#rsvp" class="nav-item nav-link">RSVP</a>
+                <a href="#contact" class="nav-item nav-link">Contact</a>
+            </div>
+        </div>
+    </nav>
+    <!-- Navbar End -->
+
+   <!-- Event Start -->
+    <div class="container-fluid py-5" id="event">
+        <div class="container py-5">
+            <div class="section-title position-relative text-center">
+                <h6 class="text-uppercase text-primary mb-3" style="letter-spacing: 3px;">Event</h6>
+                <h1 class="font-secondary display-4">Our Wedding Event</h1>
+                <i class="far fa-heart text-dark"></i>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-6 text-center">
+                    <h5 class="font-weight-normal text-muted mb-3 pb-3">Clita ipsum aliquyam dolor diam dolores elitr nonumy. Rebum sea vero ipsum eirmod tempor kasd. Diam amet lorem erat eos sit lorem elitr justo</h5>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 border-right border-primary">
+                    <div class="text-center text-md-right mr-md-3 mb-4 mb-md-0">
+                        <img class="img-fluid mb-4" src="img/event-1.jpg" alt="">
+                        <h4 class="mb-3">The Reception</h4>
+                        <p class="mb-2">123 Street, New York, USA</p>
+                        <p class="mb-0">12:00AM - 13:00PM</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="text-center text-md-left ml-md-3">
+                        <img class="img-fluid mb-4" src="img/event-2.jpg" alt="">
+                        <h4 class="mb-3">Wedding Party</h4>
+                        <p class="mb-2">123 Street, New York, USA</p>
+                        <p class="mb-0">12:00AM - 13:00PM</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+    <!-- Event End -->
+
+    <!-- Footer Start -->
+    <div class="container-fluid bg-dark text-white py-5" id="contact" style="margin-top: 90px;">
+        <div class="container text-center py-5">
+            <p class="m-0">&copy; Designed by <a class="text-primary" href="#">Bluegray Ink</a>
+            </p>
+        </div>
+    </div>
+    <!-- Footer End -->
+    <!-- Scroll to Bottom -->
+    <i class="fa fa-2x fa-angle-down text-white scroll-to-bottom"></i>
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-outline-primary btn-lg-square back-to-top"><i class="fa fa-angle-double-up"></i></a>
+
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+    <script src="lib/easing/easing.min.js"></script>
+    <script src="lib/waypoints/waypoints.min.js"></script>
+    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="lib/isotope/isotope.pkgd.min.js"></script>
+    <script src="lib/lightbox/js/lightbox.min.js"></script>
+
+    <!-- Template Javascript -->
+    <script src="js/main.js"></script>
 </body>
+
 </html>
