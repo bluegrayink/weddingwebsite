@@ -152,7 +152,19 @@
     <div class="section">
         <h2>You're Invited</h2>
         <p><strong>Click for more information!</strong></p>
-        <button class="btn" id="scanButton">Scan your card</button>
+        <button id="scanButton"><b>Android</b></button>
+         <button id="iphoneButton"><b>iOS</b></button>
+
+    <!-- iPhone-specific input section -->
+    <div id="iphoneSection" style="display: none; margin-top: 20px;">
+        <h2>Scan the QR code in the card for check the UID</h2>
+        <label for="uidInput">Enter UID:</label>
+        <input type="text" id="uidInput" placeholder="Enter your NFC UID here">
+        <button id="submitUidButton">Submit</button>
+    </div>
+
+    <div id="status"></div>
+    <div id="log"></div>
     </div>
     <div class="message-box">
         <h3>Leave a Message</h3>
