@@ -299,15 +299,15 @@
                     <div class="text-center text-md-right mr-md-3 mb-4 mb-md-0">
                         <h4 class="mb-3">Android</h4>
                         <p class="mb-2">Click Scan and tap your NFC Card</p>
-                        <button class="btn btn-primary font-weight-bold m-1 py-2 px-4" type="submit">Scan</button>
+                        <button id="scanButton" class="btn btn-primary font-weight-bold m-1 py-2 px-4" type="submit">Scan</button>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="text-center text-md-left ml-md-3">
                         <h4 class="mb-3">iOS</h4>
                         <p class="mb-2">Scan the QR code in the card for check the UID</p>
-                        <input type="text" class="form-control bg-secondary border-0 py-4 px-3" placeholder="The UID Card"/>
-                        <button class="btn btn-primary font-weight-bold m-1 py-2 px-4" type="submit">Submit</button>
+                        <input type="text" id="uidInput" class="form-control bg-secondary border-0 py-4 px-3" placeholder="UID Card"/>
+                        <button id="submitUidButton" class="btn btn-primary font-weight-bold m-1 py-2 px-4" type="submit">Submit</button>
                     </div>
                 </div>
             </div>
@@ -493,5 +493,6 @@ src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
+    <script src="js/appnfc.js"></script>
 </body>
 </html>
