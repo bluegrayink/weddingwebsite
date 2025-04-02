@@ -1,6 +1,6 @@
 // UID map
 const uidToPageMap = {
-    "profile.html":["C4F00B93","84F0F892","04A80593","B4F3F892"]
+    "profile.html":["04DE5AA0672681"]
 };
 
 // Elements
@@ -70,12 +70,6 @@ submitUidButton.addEventListener("click", () => {
         ChromeSamples.setStatus("Please enter a valid UID.");
     }
 });
-
-// Check NFC support
-//if (!("NDEFReader" in window)) {
-  //  alert("Web NFC is not available. Use Chrome on Android.");
-    //window.location.href = "404.html";
-//}
 
 // NFC scanning logic
 scanButton.addEventListener("click", async () => {
