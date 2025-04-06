@@ -31,38 +31,78 @@
             </div>
           </form>
           <p id="status-msg" class="text-center mt-3"></p>
+
+          <!-- Display messages here -->
+          <div class="mt-5" id="messages-container">
+            <h4 class="text-center mb-4">Messages</h4>
+            <div id="messages-list"></div>
+          </div>
         </div>
       </div>
     </div>
   </div>
-<div class="mt-5" id="messages-container">
-  <h4 class="text-center mb-4">Messages</h4>
-  <div id="messages-list"></div>
-</div>
   <!-- RSVP End -->
 
   <!-- Firebase SDK -->
-  <script>
-  // ... kode firebaseConfig, initializeApp, dll tetap
+  <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore-compat.js"></script>
 
-  // Menampilkan semua pesan dari Firestore (real-time)
-  db.collection("rsvp_messages").orderBy("timestamp", "desc")
-    .onSnapshot((snapshot) => {
-      const messagesList = document.getElementById("messages-list");
-      messagesList.innerHTML = ""; // Bersihkan dulu
-      snapshot.forEach((doc) => {
-        const data = doc.data();
-        const messageHTML = `
-          <div class="border rounded p-3 mb-2 bg-light">
-            <strong>${data.name}</strong><br/>
-            <small>${data.timestamp.toDate().toLocaleString()}</small>
-            <p class="mb-0">${data.message}</p>
-          </div>
-        `;
-        messagesList.innerHTML += messageHTML;
+  <script>
+    // Firebase config kamu
+    const firebaseConfig = {
+      apiKey: "AIzaSyDUlQFAIca8RMQJT8uGWa8SyGKIbP9uvzw",
+      authDomain: "bluewedsites.firebaseapp.com",
+      databaseURL: "https://bluewedsites-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "bluewedsites",
+      storageBucket: "bluewedsites.firebasestorage.app",
+      messagingSenderId: "337835623394",
+      appId: "1:337835623394:web:57212d721c0f7e00d7afbb",
+      measurementId: "G-TJX98ZBWFE"
+    };
+
+    // Inisialisasi Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    // Kirim data ke Firestore
+    document.getElementById("rsvp-form").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const name = e.target.name.value;
+      const message = e.target.message.value;
+
+      db.collection("rsvp_messages").add({
+        name: name,
+        message: message,
+        timestamp: new Date()
+      })
+      .then(() => {
+        document.getElementById("status-msg").innerText = "Pesan berhasil dikirim!";
+        e.target.reset();
+      })
+      .catch((error) => {
+        console.error("Error adding document: ", error);
+        document.getElementById("status-msg").innerText = "Terjadi kesalahan saat mengirim.";
       });
     });
-</script>
+
+    // Tampilkan pesan dari Firestore
+    db.collection("rsvp_messages").orderBy("timestamp", "desc")
+      .onSnapshot((snapshot) => {
+        const messagesList = document.getElementById("messages-list");
+        messagesList.innerHTML = "";
+        snapshot.forEach((doc) => {
+          const data = doc.data();
+          const messageHTML = `
+            <div class="border rounded p-3 mb-2 bg-light">
+              <strong>${data.name}</strong><br/>
+              <small>${data.timestamp.toDate().toLocaleString()}</small>
+              <p class="mb-0">${data.message}</p>
+            </div>
+          `;
+          messagesList.innerHTML += messageHTML;
+        });
+      });
+  </script>
 
 </body>
 </html>
