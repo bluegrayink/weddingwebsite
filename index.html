@@ -452,23 +452,11 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-    <!-- RSVP End -->
-<!-- Message Start -->
-    <div class="container-fluid py-5" id="message">
-        <div class="container py-5">
-            <div class="row">
-                <div class="col-lg-4 col-md-6 mb-4 portfolio-item">
-                    <div class="position-relative mb-2">
-                        <div id="messages-list" class="bg-secondary text-center p-4">
-                        </div>
-                    </div>
-                </div>
+            <div id="messages-list" class="bg-secondary text-center p-4">
             </div>
         </div>
     </div>
-    <!-- Message End -->
+    <!-- RSVP End -->
     
     <!-- Footer Start -->
     <div class="container-fluid bg-dark text-white py-5" id="contact" style="margin-top: 20px;">
@@ -542,8 +530,8 @@
   onChildAdded(ref(db, "messages"), function (snapshot) {
     const data = snapshot.val();
     const newMessage = document.createElement("div");
-    newMessage.classList.add("card");
-    newMessage.innerHTML = `<h4 class="mb-3">${data.name}:</h4><p class="text-uppercase">${data.message}</p>`;
+    newMessage.classList.add("card", "mb-2");
+    newMessage.innerHTML = `<h4 class="mb-3">${data.name}:</h4><p>${data.message}</p>`;
     messagesList.appendChild(newMessage);
   });
 </script>
