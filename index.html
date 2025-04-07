@@ -461,7 +461,6 @@
             <div class="row">
                 <div class="col-lg-4 col-md-6 mb-4 portfolio-item">
                     <div class="position-relative mb-2">
-                        <img class="img-fluid w-100" src="img/bridesmaid-2.jpg" alt="">
                         <div id="messages-list" class="bg-secondary text-center p-4">
                         </div>
                     </div>
@@ -544,8 +543,7 @@
     const data = snapshot.val();
     const newMessage = document.createElement("div");
     // newMessage.classList.add("card", "p-3", "mb-2");
-    newMessage.innerHTML = `<h4 class="mb-3">${data.name}:</h4>`;
-    newMessage.innerHTML = `<p class="text-uppercase">${data.message}</p>`;
+    newMessage.innerHTML = `<h4 class="mb-3">${data.name}:</h4><p class="text-uppercase">${data.message}</p>`;
     messagesList.appendChild(newMessage);
   });
 </script>
