@@ -452,7 +452,7 @@
                     </div>
                 </div>
             </div>
-            <div id="messages-list" class="bg-secondary text-center py-2 px-4">
+            <div id="messages-list" class="text-center py-2 px-4">
             </div>
         </div>
     </div>
@@ -530,7 +530,7 @@
   onChildAdded(ref(db, "messages"), function (snapshot) {
     const data = snapshot.val();
     const newMessage = document.createElement("div");
-    newMessage.classList.add("p-3", "mb-2");
+    newMessage.classList.add("bg-secondary", "p-3", "mb-2");
     newMessage.innerHTML = `<h4>${data.name}:</h4><p>${data.message}</p>`;
     messagesList.appendChild(newMessage);
   });
