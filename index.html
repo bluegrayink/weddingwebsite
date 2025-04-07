@@ -24,23 +24,54 @@
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
-<style>
-#messages-list {
-‎      margin-top: 2rem;
-‎      background: #fff;
-‎      padding: 1rem;
-‎      border-radius: 8px;
-‎    }
-‎    #messages-list p {
-‎      margin: 0.5rem 0;
-‎      border-bottom: 1px solid #ddd;
-‎      padding-bottom: 0.5rem;
-‎    }
-‎  </style>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-‎  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-</head>
 
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+‎    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script>
+‎    // Firebase Config (ganti dengan milikmu)
+‎    const firebaseConfig = {
+‎      apiKey: "AIzaSyDUlQFAIca8RMQJT8uGWa8SyGKIbP9uvzw",
+‎      authDomain: "bluewedsites.firebaseapp.com",
+‎      databaseURL: "https://bluewedsites-default-rtdb.asia-southeast1.firebasedatabase.app",
+‎      projectId: "bluewedsites",
+‎      storageBucket: "bluewedsites.appspot.com",
+‎      messagingSenderId: "337835623394",
+‎      appId: "1:337835623394:web:57212d721c0f7e00d7afbb",
+‎      measurementId: "G-TJX98ZBWFE"
+‎    };
+‎    firebase.initializeApp(firebaseConfig);
+‎
+‎    const db = firebase.database();
+‎    const form = document.getElementById("rsvp-form");
+‎    const nameInput = document.getElementById("name");
+‎    const messageInput = document.getElementById("message");
+‎    const messagesList = document.getElementById("messages-list");
+‎
+‎    // Simpan pesan ke Firebase saat form disubmit
+‎    form.addEventListener("submit", function (e) {
+‎      e.preventDefault();
+‎
+‎      const name = nameInput.value.trim();
+‎      const message = messageInput.value.trim();
+‎
+‎      if (name && message) {
+‎        db.ref("messages").push({
+‎          name: name,
+‎          message: message
+‎        });
+‎        form.reset();
+‎      }
+‎    });
+‎
+‎    // Tampilkan pesan-pesan dari database
+‎    db.ref("messages").on("child_added", function (snapshot) {
+‎      const data = snapshot.val();
+‎      const newMessage = document.createElement("p");
+‎      newMessage.textContent = `${data.name}: ${data.message}`;
+‎      messagesList.appendChild(newMessage);
+‎    });
+‎  </script>
+</head>
 <body data-spy="scroll" data-target=".navbar" data-offset="51">
     <!-- Navbar Start -->
     <nav class="navbar fixed-top shadow-sm navbar-expand-lg bg-dark navbar-dark py-3 py-lg-0 px-lg-5">
@@ -460,20 +491,18 @@
                                 <textarea id="message" class="form-control bg-secondary border-0 py-2 px-3" rows="5" placeholder="Your Message" required="required"></textarea>
                             </div>
                             <div>
-                                <button class="btn btn-primary font-weight-bold py-3 px-5" type="submit">Submit</button>
+                                <button class="btn btn-primary font-weight-bold m-1 py-2 px-4" type="submit">Submit</button>
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
+            <div id="messages-list">
+‎                <h3>Messages:</h3>
+‎            </div>
         </div>
     </div>
     <!-- RSVP End -->
-
-<div id="messages-list">
-‎    <h3>Messages:</h3>
-‎  </div>
-
     <!-- Footer Start -->
     <div class="container-fluid bg-dark text-white py-5" id="contact" style="margin-top: 20px;">
         <div class="container text-center py-5">
@@ -501,49 +530,5 @@
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
     <script src="js/appnfc.js"></script>
-<script>
-‎    // Firebase Config (ganti dengan milikmu)
-‎    const firebaseConfig = {
-‎      apiKey: "AIzaSyDUlQFAIca8RMQJT8uGWa8SyGKIbP9uvzw",
-‎      authDomain: "bluewedsites.firebaseapp.com",
-‎      databaseURL: "https://bluewedsites-default-rtdb.asia-southeast1.firebasedatabase.app",
-‎      projectId: "bluewedsites",
-‎      storageBucket: "bluewedsites.appspot.com",
-‎      messagingSenderId: "337835623394",
-‎      appId: "1:337835623394:web:57212d721c0f7e00d7afbb",
-‎      measurementId: "G-TJX98ZBWFE"
-‎    };
-‎    firebase.initializeApp(firebaseConfig);
-‎
-‎    const db = firebase.database();
-‎    const form = document.getElementById("rsvp-form");
-‎    const nameInput = document.getElementById("name");
-‎    const messageInput = document.getElementById("message");
-‎    const messagesList = document.getElementById("messages-list");
-‎
-‎    // Simpan pesan ke Firebase saat form disubmit
-‎    form.addEventListener("submit", function (e) {
-‎      e.preventDefault();
-‎
-‎      const name = nameInput.value.trim();
-‎      const message = messageInput.value.trim();
-‎
-‎      if (name && message) {
-‎        db.ref("messages").push({
-‎          name: name,
-‎          message: message
-‎        });
-‎        form.reset();
-‎      }
-‎    });
-‎
-‎    // Tampilkan pesan-pesan dari database
-‎    db.ref("messages").on("child_added", function (snapshot) {
-‎      const data = snapshot.val();
-‎      const newMessage = document.createElement("p");
-‎      newMessage.textContent = `${data.name}: ${data.message}`;
-‎      messagesList.appendChild(newMessage);
-‎    });
-‎  </script>
 </body>
 </html>
