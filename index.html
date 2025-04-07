@@ -24,6 +24,8 @@
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+‎  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 </head>
 
 <body data-spy="scroll" data-target=".navbar" data-offset="51">
@@ -451,6 +453,9 @@
                     </div>
                 </div>
             </div>
+<div id="messages-list">
+‎    <h3>Messages:</h3>
+‎  </div>
         </div>
     </div>
     <!-- RSVP End -->
@@ -483,5 +488,49 @@
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
     <script src="js/appnfc.js"></script>
+<script>
+‎    // Firebase Config (ganti dengan milikmu)
+‎    const firebaseConfig = {
+‎      apiKey: "AIzaSyDUlQFAIca8RMQJT8uGWa8SyGKIbP9uvzw",
+‎      authDomain: "bluewedsites.firebaseapp.com",
+‎      databaseURL: "https://bluewedsites-default-rtdb.asia-southeast1.firebasedatabase.app",
+‎      projectId: "bluewedsites",
+‎      storageBucket: "bluewedsites.appspot.com",
+‎      messagingSenderId: "337835623394",
+‎      appId: "1:337835623394:web:57212d721c0f7e00d7afbb",
+‎      measurementId: "G-TJX98ZBWFE"
+‎    };
+‎    firebase.initializeApp(firebaseConfig);
+‎
+‎    const db = firebase.database();
+‎    const form = document.getElementById("rsvp-form");
+‎    const nameInput = document.getElementById("name");
+‎    const messageInput = document.getElementById("message");
+‎    const messagesList = document.getElementById("messages-list");
+‎
+‎    // Simpan pesan ke Firebase saat form disubmit
+‎    form.addEventListener("submit", function (e) {
+‎      e.preventDefault();
+‎
+‎      const name = nameInput.value.trim();
+‎      const message = messageInput.value.trim();
+‎
+‎      if (name && message) {
+‎        db.ref("messages").push({
+‎          name: name,
+‎          message: message
+‎        });
+‎        form.reset();
+‎      }
+‎    });
+‎
+‎    // Tampilkan pesan-pesan dari database
+‎    db.ref("messages").on("child_added", function (snapshot) {
+‎      const data = snapshot.val();
+‎      const newMessage = document.createElement("p");
+‎      newMessage.textContent = `${data.name}: ${data.message}`;
+‎      messagesList.appendChild(newMessage);
+‎    });
+‎  </script>
 </body>
 </html>
