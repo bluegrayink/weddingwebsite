@@ -542,7 +542,7 @@
   onChildAdded(ref(db, "messages"), function (snapshot) {
     const data = snapshot.val();
     const newMessage = document.createElement("div");
-    // newMessage.classList.add("card", "p-3", "mb-2");
+    newMessage.classList.add("card");
     newMessage.innerHTML = `<h4 class="mb-3">${data.name}:</h4><p class="text-uppercase">${data.message}</p>`;
     messagesList.appendChild(newMessage);
   });
