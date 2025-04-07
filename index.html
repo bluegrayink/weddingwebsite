@@ -508,6 +508,38 @@
   // Initialize Firebase
   const app = initializeApp(firebaseConfig);
   const analytics = getAnalytics(app);
+
+firebase.initializeApp(firebaseConfig);
+‎
+‎    const db = firebase.database();
+‎    const form = document.getElementById("rsvp-form");
+‎    const nameInput = document.getElementById("name");
+‎    const messageInput = document.getElementById("message");
+‎    const messagesList = document.getElementById("messages-list");
+‎
+‎    // Simpan pesan ke Firebase saat form disubmit
+‎    form.addEventListener("submit", function (e) {
+‎      e.preventDefault();
+‎
+‎      const name = nameInput.value.trim();
+‎      const message = messageInput.value.trim();
+‎
+‎      if (name && message) {
+‎        db.ref("messages").push({
+‎          name: name,
+‎          message: message
+‎        });
+‎        form.reset();
+‎      }
+‎    });
+‎
+‎    // Tampilkan pesan-pesan dari database
+‎    db.ref("messages").on("child_added", function (snapshot) {
+‎      const data = snapshot.val();
+‎      const newMessage = document.createElement("p");
+‎      newMessage.textContent = `${data.name}: ${data.message}`;
+‎      messagesList.appendChild(newMessage);
+‎    });
 </script>
 </body>
 </html>
