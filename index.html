@@ -452,14 +452,25 @@
                     </div>
                 </div>
             </div>
-            <div id="messages-list" class="col-md-6 text-center text-md-left">
-                <div class="h-100 d-flex flex-column justify-content-center bg-secondary p-4 ml-md-3">
-                    <h4 class="mb-2">Message</h4>
+        </div>
+    </div>
+    <!-- RSVP End -->
+<!-- Message Start -->
+    <div class="container-fluid py-5" id="message">
+        <div class="container py-5">
+            <div class="row">
+                <div class="col-lg-4 col-md-6 mb-4 portfolio-item">
+                    <div class="position-relative mb-2">
+                        <img class="img-fluid w-100" src="img/bridesmaid-2.jpg" alt="">
+                        <div id="messages-list" class="bg-secondary text-center p-4">
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- RSVP End -->
+    <!-- Message End -->
+    
     <!-- Footer Start -->
     <div class="container-fluid bg-dark text-white py-5" id="contact" style="margin-top: 20px;">
         <div class="container text-center py-5">
@@ -533,7 +544,8 @@
     const data = snapshot.val();
     const newMessage = document.createElement("div");
     // newMessage.classList.add("card", "p-3", "mb-2");
-    newMessage.innerHTML = `<strong>${data.name}:</strong><br>${data.message}`;
+    newMessage.innerHTML = `<h4 class="mb-3">${data.name}:</h4>`;
+    newMessage.innerHTML = `<p class="text-uppercase">${data.message}</p>`;
     messagesList.appendChild(newMessage);
   });
 </script>
