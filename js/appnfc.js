@@ -1,5 +1,5 @@
 const uidToPageMap = {
-    "profile.html":["04DE5AA0672681", "AYUU123CAL"]
+    "profile.html":["04DE5AA0672681", "EDELYN00ACC"]
 };
 
 // Elements
