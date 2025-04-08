@@ -24,29 +24,7 @@
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
-    <script>
-          // Prevent viewing source code using Ctrl+U
-    document.addEventListener('keydown', (e) => {
-        if (e.ctrlKey && e.key === 'u') {
-            e.preventDefault();
-        }
-    });
-
-    // Redirect non-Android and non-iOS Safari users
-    window.onload = function() {
-        var userAgent = navigator.userAgent;
-
-    // Cek apakah pengguna menggunakan Safari di iPhone
-    var isSafariIphone = /iPhone/.test(userAgent) && /Safari/.test(userAgent);
-    // Cek apakah pengguna menggunakan browser di Android
-    var isAndroidBrowser = /Android/.test(userAgent);
-
-    if (!isSafariIphone && !isAndroidBrowser) {
-        document.body.innerHTML = "<h1>Website ini hanya dapat diakses melalui Safari di iPhone atau browser di Android.</h1>";
-    }
-};
-    </script>
-    
+   
 </head>
 <body data-spy="scroll" data-target=".navbar" data-offset="51">
     <!-- Navbar Start -->
@@ -558,5 +536,32 @@
     messagesList.appendChild(newMessage);
   });
 </script>
+<script>
+    // Cegah Ctrl+U dan klik kanan
+    document.addEventListener('keydown', function (e) {
+        if ((e.ctrlKey && e.key === 'u') || (e.ctrlKey && e.shiftKey && e.key === 'I')) {
+            e.preventDefault();
+            alert("Akses ini dibatasi.");
+        }
+    });
+
+    document.addEventListener('contextmenu', function (e) {
+        e.preventDefault();
+        alert("Klik kanan dinonaktifkan.");
+    });
+
+    // Redirect jika bukan Safari di iPhone atau browser di Android
+    window.addEventListener('load', function () {
+        const ua = navigator.userAgent;
+
+        const isIphoneSafari = /iPhone/.test(ua) && /Safari/.test(ua) && !/CriOS/.test(ua);
+        const isAndroidBrowser = /Android/.test(ua) && /Chrome/.test(ua);
+
+        if (!(isIphoneSafari || isAndroidBrowser)) {
+            document.body.innerHTML = "<h1 style='text-align:center;margin-top:100px;'>Website ini hanya dapat diakses melalui Safari (iPhone) atau browser di Android.</h1>";
+        }
+    });
+</script>
+
 </body>
 </html>
