@@ -533,7 +533,7 @@
     const data = snapshot.val();
     const newMessage = document.createElement("div");
     newMessage.classList.add("bg-secondary", "p-3", "mb-2");
-    newMessage.innerHTML = `<h4>${data.name}:</h4><p>${data.message}</p>`;
+    newMessage.innerHTML = `<h4>${data.name}</h4><p>${data.message}</p>`;
     messagesList.appendChild(newMessage);
   });
 </script>
