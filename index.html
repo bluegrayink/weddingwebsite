@@ -24,7 +24,28 @@
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
-    
+    <script>
+          // Prevent viewing source code using Ctrl+U
+    document.addEventListener('keydown', (e) => {
+        if (e.ctrlKey && e.key === 'u') {
+            e.preventDefault();
+        }
+    });
+
+    // Redirect non-Android and non-iOS Safari users
+    window.onload = function() {
+        var userAgent = navigator.userAgent;
+
+    // Cek apakah pengguna menggunakan Safari di iPhone
+    var isSafariIphone = /iPhone/.test(userAgent) && /Safari/.test(userAgent);
+    // Cek apakah pengguna menggunakan browser di Android
+    var isAndroidBrowser = /Android/.test(userAgent);
+
+    if (!isSafariIphone && !isAndroidBrowser) {
+        document.body.innerHTML = "<h1>Website ini hanya dapat diakses melalui Safari di iPhone atau browser di Android.</h1>";
+    }
+};
+    </script>
     
 </head>
 <body data-spy="scroll" data-target=".navbar" data-offset="51">
@@ -536,27 +557,6 @@
     newMessage.innerHTML = `<h4>${data.name}</h4><p>${data.message}</p>`;
     messagesList.appendChild(newMessage);
   });
-
-    // Prevent viewing source code using Ctrl+U
-    document.addEventListener('keydown', (e) => {
-        if (e.ctrlKey && e.key === 'u') {
-            e.preventDefault();
-        }
-    });
-
-    // Redirect non-Android and non-iOS Safari users
-    window.onload = function() {
-        var userAgent = navigator.userAgent;
-
-    // Cek apakah pengguna menggunakan Safari di iPhone
-    var isSafariIphone = /iPhone/.test(userAgent) && /Safari/.test(userAgent);
-    // Cek apakah pengguna menggunakan browser di Android
-    var isAndroidBrowser = /Android/.test(userAgent);
-
-    if (!isSafariIphone && !isAndroidBrowser) {
-        document.body.innerHTML = "<h1>Website ini hanya dapat diakses melalui Safari di iPhone atau browser di Android.</h1>";
-    }
-};
 </script>
 </body>
 </html>
