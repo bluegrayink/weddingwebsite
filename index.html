@@ -283,38 +283,35 @@
     <!-- Gallery End -->
     <!-- Event Start -->
     <div class="container-fluid pb-5" id="event">
-        <div class="container">
-            <div class="section-title position-relative text-center">
+        <div class="section-title position-relative text-center">
                 <h6 class="text-uppercase text-primary mb-3" style="letter-spacing: 3px;">Event</h6>
                 <h1 class="font-secondary display-4">Our Wedding Event</h1>
                 <i class="far fa-heart text-dark"></i>
+        </div>
+        <div class="owl-carousel gallery-carousel">
+            <div class="gallery-item">
+               <div class="text-center text-md-left mb-6 ml-md-3">
+                    <h4 class="mb-3">Android</h4>
+                    <p class="mb-2">Click Scan and tap your NFC Card</p>
+                    <div class="mb-6 ml-md-3">
+                        <button id="scanButton" class="btn btn-primary font-weight-bold m-1 py-2 px-4" type="submit">Scan</button>
+                    </div>
+                </div>
             </div>
-            <div class="row">
-               <div class="col-md-6">
-                    <div class="text-center text-md-left mb-6 ml-md-3">
-                        <h4 class="mb-3">Android</h4>
-                        <p class="mb-2">Click Scan and tap your NFC Card</p>
-                        <div class="mb-6 ml-md-3">
-                            <button id="scanButton" class="btn btn-primary font-weight-bold m-1 py-2 px-4" type="submit">Scan</button>
+            <div class="gallery-item">
+               <div class="text-center text-md-left ml-md-3">
+                    <h4 class="mb-3">iOS</h4>
+                    <p class="mb-2">Scan QR code in the card for check the UID</p>
+                    <div class="form-group">
+                        <div class="form-group col-sm-6">
+                            <input type="text" id="uidInput" class="form-control bg-secondary border-0 py-4 px-3" placeholder="UID Card" />
                         </div>
                     </div>
+                    <button id="submitUidButton" class="btn btn-primary font-weight-bold m-1 py-2 px-4" type="submit">Submit</button>
                 </div>
-                <i class="far fa-heart text-dark"></i>
-                <div class="col-md-6">
-                    <div class="text-center text-md-left ml-md-3">
-                        <h4 class="mb-3">iOS</h4>
-                        <p class="mb-2">Scan QR code in the card for check the UID</p>
-                        <div class="form-group">
-                                <div class="form-group col-sm-6">
-                                    <input type="text" id="uidInput" class="form-control bg-secondary border-0 py-4 px-3" placeholder="UID Card" />
-                                </div>
-                            </div>
-                        <button id="submitUidButton" class="btn btn-primary font-weight-bold m-1 py-2 px-4" type="submit">Submit</button>
-                    </div>
-                </div>
-                <div id="status"></div>
-                <div id="log"></div>
             </div>
+            <div id="status"></div>
+            <div id="log"></div>
         </div>
     </div>
     <!-- Event End -->
