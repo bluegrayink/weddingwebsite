@@ -536,32 +536,5 @@
     messagesList.appendChild(newMessage);
   });
 </script>
-<script>
-    // Cegah Ctrl+U dan klik kanan
-    document.addEventListener('keydown', function (e) {
-        if ((e.ctrlKey && e.key === 'u') || (e.ctrlKey && e.shiftKey && e.key === 'I')) {
-            e.preventDefault();
-            alert("Akses ini dibatasi.");
-        }
-    });
-
-    document.addEventListener('contextmenu', function (e) {
-        e.preventDefault();
-        alert("Klik kanan dinonaktifkan.");
-    });
-
-    // Redirect jika bukan Safari di iPhone atau browser di Android
-    window.addEventListener('load', function () {
-        const ua = navigator.userAgent;
-
-        const isIphoneSafari = /iPhone/.test(ua) && /Safari/.test(ua) && !/CriOS/.test(ua);
-        const isAndroidBrowser = /Android/.test(ua) && /Chrome/.test(ua);
-
-        if (!(isIphoneSafari || isAndroidBrowser)) {
-            document.body.innerHTML = "<h1 style='text-align:center;margin-top:100px;'>Website ini hanya dapat diakses melalui Safari (iPhone) atau browser di Android.</h1>";
-        }
-    });
-</script>
-
 </body>
 </html>
