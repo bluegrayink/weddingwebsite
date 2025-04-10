@@ -112,7 +112,6 @@
     "C37947BF": "Kristie Gita",
     "4EDA47BF": "Miyuki Yoruna",
     "598A4ABF": "Vii Cos"
-    // Tambahkan UID lainnya di sini (tanpa tanda ":")
   };
 
   document.getElementById('scanButton').addEventListener('click', async () => {
@@ -132,8 +131,8 @@
 
         if (name !== "Unknown Card") {
           document.getElementById("status").innerHTML = `
-            <p class="m-0">Welcome,</p>
-            <h4 class="mb-2">${name}</h4>
+            <p class="mb-2">Welcome,</p>
+            <h4>${name}</h4>
           `;
         } else {
           document.getElementById("status").innerHTML = `
