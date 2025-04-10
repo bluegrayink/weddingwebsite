@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8">
     <title>Jack & Rose - Free Wedding Website Template</title>
@@ -38,25 +37,19 @@
         <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
             <div class="navbar-nav ml-auto py-0">
                 <a href="#home" class="nav-item nav-link active">Home</a>
-                <a href="#about" class="nav-item nav-link">About</a>
-                <a href="#story" class="nav-item nav-link">Story</a>
-                <a href="#gallery" class="nav-item nav-link">Gallery</a>
             </div>
             <a href="index.html" class="navbar-brand mx-5 d-none d-lg-block">
                 <h1 class="font-secondary text-white mb-n2">Jack <span class="text-primary">&</span> Rose</h1>
             </a>
             <div class="navbar-nav mr-auto py-0">
-                <a href="#family" class="nav-item nav-link">Family</a>
-                <a href="#event" class="nav-item nav-link">Event</a>
                 <a href="#rsvp" class="nav-item nav-link">RSVP</a>
-                <a href="#contact" class="nav-item nav-link">Contact</a>
             </div>
         </div>
     </nav>
     <!-- Navbar End -->
   
     <!-- Friends & Family Start -->
-    <div class="container-fluid py-5" id="family">
+    <div class="container-fluid py-5" id="rsvp">
         <div class="container pt-5 pb-3">
             <div class="section-title position-relative text-center">
                 <h6 class="text-uppercase text-primary mb-3" style="letter-spacing: 3px;">RSVP</h6>
@@ -71,43 +64,11 @@
                 </div>
             </div>
             <div class="row justify-content-center">
-               <h4 id="status" class="text-center">Click the button to start scanning</h4>
+               <div id="status" class="text-center"></div>
             </div> 
         </div>
     </div>
     <!-- Friends & Family End -->
-    
-    <!-- Footer Start -->
-    <div class="container-fluid bg-dark text-white py-5" id="contact" style="margin-top: 90px;">
-        <div class="container text-center py-5">
-            <div class="section-title position-relative text-center">
-                <h1 class="font-secondary display-3 text-white">Thank You</h1>
-                <i class="far fa-heart text-white"></i>
-            </div>
-            <div class="d-flex justify-content-center mb-4">
-                <a class="btn btn-lg btn-outline-light btn-lg-square mr-2" href="#"><i class="fab fa-twitter"></i></a>
-                <a class="btn btn-lg btn-outline-light btn-lg-square mr-2" href="#"><i class="fab fa-facebook-f"></i></a>
-                <a class="btn btn-lg btn-outline-light btn-lg-square mr-2" href="#"><i class="fab fa-linkedin-in"></i></a>
-                <a class="btn btn-lg btn-outline-light btn-lg-square" href="#"><i class="fab fa-instagram"></i></a>
-            </div>
-            <div class="d-flex justify-content-center py-2">
-                <p class="text-white" href="#">info@example.com</p>
-                <span class="px-3">|</span>
-                <p class="text-white" href="#">+012 345 6789</p>
-            </div>
-            <p class="m-0">&copy; <a class="text-primary" href="#">Domain Name</a>. Designed by <a class="text-primary" href="https://htmlcodex.com">HTML Codex</a>
-            </p>
-        </div>
-    </div>
-    <!-- Footer End -->
-
-
-    <!-- Scroll to Bottom -->
-    <i class="fa fa-2x fa-angle-down text-white scroll-to-bottom"></i>
-
-    <!-- Back to Top -->
-    <a href="#" class="btn btn-lg btn-outline-primary btn-lg-square back-to-top"><i class="fa fa-angle-double-up"></i></a>
-
 
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -121,36 +82,45 @@
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
     <script>
-    const uidToName = {
-        "04DE5AA0672681": "Jane Doe",
-        "C37947BF": "Kristie Gita",
-        "4EDA47BF": "Miyuki Yoruna",
-        "598A4ABF": "Vii Cos"
-      // Tambahkan UID lainnya di sini (tanpa tanda ":")
-    };
+  const uidToName = {
+    "04DE5AA0672681": "Jane Doe",
+    "C37947BF": "Kristie Gita",
+    "4EDA47BF": "Miyuki Yoruna",
+    "598A4ABF": "Vii Cos"
+    // Tambahkan UID lainnya di sini (tanpa tanda ":")
+  };
 
-    document.getElementById('scanButton').addEventListener('click', async () => {
-      if (!('NDEFReader' in window)) {
-        document.getElementById("status").textContent = "NFC not supported on this device.";
-        return;
-      }
+  document.getElementById('scanButton').addEventListener('click', async () => {
+    if (!('NDEFReader' in window)) {
+      document.getElementById("status").innerHTML = `<p class="text-danger">NFC not supported on this device.</p>`;
+      return;
+    }
 
-      try {
-        const reader = new NDEFReader();
-        await reader.scan();
-        document.getElementById("status").textContent = "Scanning... Tap your card.";
+    try {
+      const reader = new NDEFReader();
+      await reader.scan();
+      document.getElementById("status").innerHTML = `<p>Scanning... Tap your card.</p>`;
 
-        reader.onreading = (event) => {
-          let uid = event.serialNumber.toUpperCase().replace(/:/g, "");
-          const name = uidToName[uid] || "Unknown Card";
-          document.getElementById("status").textContent = name !== "Unknown Card" ? `Welcome, ${name}` : "Card not recognized.";
-        };
+      reader.onreading = (event) => {
+        let uid = event.serialNumber.toUpperCase().replace(/:/g, "");
+        const name = uidToName[uid] || "Unknown Card";
 
-      } catch (error) {
-        document.getElementById("status").textContent = "Error: " + error;
-      }
-    });
-  </script>
+        if (name !== "Unknown Card") {
+          document.getElementById("status").innerHTML = `
+            <p class="m-0">Welcome,</p>
+            <h4 class="mb-2">${name}</h4>
+          `;
+        } else {
+          document.getElementById("status").innerHTML = `
+            <p class="m-0 text-danger">Card not recognized.</p>
+          `;
+        }
+      };
+
+    } catch (error) {
+      document.getElementById("status").innerHTML = `<p class="text-danger">Error: ${error}</p>`;
+    }
+  });
+</script>
 </body>
-
 </html>
