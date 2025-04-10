@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>NFC Card Reader</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 50px;
+      background-color: #f9f9f9;
+    }
+
+    button {
+      font-size: 18px;
+      padding: 12px 24px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    #status {
+      font-size: 20px;
+      margin-top: 30px;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <h1>Tap your NFC card</h1>
+  <button id="scanButton">Start NFC Scan</button>
+  <div id="status">Click the button to start scanning</div>
+
+  <script>
+    const uidToName = {
+      "04DE5AA0672681": "Jane Doe",
+      // Tambahkan UID lain tanpa tanda ":" di sini
+    };
+
+    document.getElementById('scanButton').addEventListener('click', async () => {
+      if (!('NDEFReader' in window)) {
+        document.getElementById("status").textContent = "NFC not supported on this device.";
+        return;
+      }
+
+      try {
+        const reader = new NDEFReader();
+        await reader.scan();
+        document.getElementById("status").textContent = "Scanning... Tap your card.";
+
+        reader.onreading = (event) => {
+          let uid = event.serialNumber.toUpperCase().replace(/:/g, "");
+          const name = uidToName[uid] || "Unknown Card";
+          document.getElementById("status").textContent = `Name: ${name}`;
+        };
+
+      } catch (error) {
+        document.getElementById("status").textContent = "Error: " + error;
+      }
+    });
+  </script>
+</body>
+</html>
