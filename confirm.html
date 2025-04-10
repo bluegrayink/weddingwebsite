@@ -26,9 +26,10 @@
     }
 
     #status {
-      font-size: 20px;
-      margin-top: 30px;
+      font-size: 28px;
+      margin-top: 40px;
       color: #333;
+      font-weight: bold;
     }
   </style>
 </head>
@@ -40,7 +41,7 @@
   <script>
     const uidToName = {
       "04DE5AA0672681": "Jane Doe",
-      // Tambahkan UID lain tanpa tanda ":" di sini
+      // Tambahkan UID lainnya di sini (tanpa tanda ":")
     };
 
     document.getElementById('scanButton').addEventListener('click', async () => {
@@ -57,7 +58,7 @@
         reader.onreading = (event) => {
           let uid = event.serialNumber.toUpperCase().replace(/:/g, "");
           const name = uidToName[uid] || "Unknown Card";
-          document.getElementById("status").textContent = `Name: ${name}`;
+          document.getElementById("status").textContent = name !== "Unknown Card" ? `Welcome, ${name}` : "Card not recognized.";
         };
 
       } catch (error) {
